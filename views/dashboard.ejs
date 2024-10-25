@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRSolutions Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">QRSolutions</div>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="#generate">Generate QR</a></li>
+        <li><a href="#analytics">Analytics</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="generate">
+      <h2>Generate QR Code</h2>
+      <form id="qr-form">
+        <input type="url" id="url-input" placeholder="Enter URL" required>
+        <button type="submit">Generate QR Code</button>
+      </form>
+      <div id="qr-result"></div>
+    </section>
+
+    <section id="analytics">
+      <h2>Analytics</h2>
+      <p>Your QR code performance will be displayed here.</p>
+      <!-- Add charts or tables for analytics data -->
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 QRSolutions. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('qr-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('url-input').value;
+      const response = await fetch('/generate-qr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `url=${encodeURIComponent(url)}`,
+      });
+      const data = await response.json();
+      const resultDiv = document.getElementById('qr-result');
+      resultDiv.innerHTML = `<img src="${data.qrCode}" alt="Generated QR Code">`;
+    });
+  </script>
+</body>
+</html>
